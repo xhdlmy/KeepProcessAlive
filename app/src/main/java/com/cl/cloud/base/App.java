@@ -7,15 +7,11 @@ import android.content.Intent;
 import com.cl.cloud.service.KeepAliveService;
 import com.cl.cloud.service.KeepJobService;
 
-/**
- * Created by computer on 2018/10/30.
- */
-
 public class App extends Application {
 
     public static Context sContext;
 
-    public static Context getContext(){
+    public static Context getContext() {
         return sContext;
     }
 
@@ -27,5 +23,4 @@ public class App extends Application {
         sContext.startService(new Intent(sContext, KeepJobService.class));
         KeepAliveManager.getInstance().registerAliveReceiver(sContext);
     }
-
 }

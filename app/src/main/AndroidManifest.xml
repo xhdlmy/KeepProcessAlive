@@ -29,6 +29,8 @@
         <service android:name=".service.KeepJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <service android:name=".base.KeepAliveManager$NotificationHideService"/>
+        <service android:name=".service.PersistService"
+            android:process=":persist"/>
     </application>
 
 </manifest>
