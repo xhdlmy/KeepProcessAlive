@@ -52,15 +52,6 @@ public class KeepAliveManager {
         }
     };
 
-    public void registerAliveReceiver(Context context) {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(RECEIVE_BOOT_COMPLETED);
-        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        context.registerReceiver(mAliveReciever, filter);
-    }
-
     /*
     OnePixelActivity 相关
      */

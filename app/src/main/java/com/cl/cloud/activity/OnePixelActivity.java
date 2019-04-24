@@ -10,7 +10,7 @@ import android.view.WindowManager;
 import com.cl.cloud.base.KeepAliveManager;
 
 /*
-    进程保活方案：1px Activity 可在屏幕锁屏时进程优先级由4提升为优先级2。
+    进程保活方案：1px Activity 可在屏幕锁屏时进程优先级由4提升为优先级0-2。
     适用场景：本方案主要解决第三方应用及系统管理工具在检测到锁屏事件后一段时间（一般为5分钟以内）内会杀死后台进程，已达到省电的目的问题。
     适用版本：适用于所有的 Android 版本。
  */

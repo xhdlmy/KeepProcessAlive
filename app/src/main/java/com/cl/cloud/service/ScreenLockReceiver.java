@@ -16,7 +16,7 @@ import com.cl.cloud.base.KeepAliveManager;
 
  */
 
-public class AppReceiver extends BroadcastReceiver {
+public class ScreenLockReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {

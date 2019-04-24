@@ -44,7 +44,9 @@ Android Terminal(终端) 查看进程PID 和 优先级 oom_adj
 /*
     拉活方案：
     1. START_STICKY
-    2. 接收系统广播
+        局限性：Service 第一次被异常杀死后会在5秒内重启，第二次被杀死会在10秒内重启，一旦在短时间内 Service 被杀死达到5次，则系统不再拉起
+    2. 接收系统广播（备用方案，暂不实现）
+        局限性：只能保证发生系统广播时拉活进程，但无法保证进程挂掉后立即拉活。
  */
 
 public class KeepAliveService extends Service {
@@ -59,14 +61,6 @@ public class KeepAliveService extends Service {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        KeepAliveManager.getInstance().unregisterScreenReceiver(this);
-        KeepAliveManager.getInstance().stopServiceForeground();
-        Log.i(TAG, "onDestroy");
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand");
         KeepAliveManager.getInstance().registerKeepAliveService(this);
@@ -77,6 +71,14 @@ public class KeepAliveService extends Service {
         START_STICKY 不能完全保证拉活       Log 中出现 Scheduling restart of crashed service 可能拉活，也可能拉不活 华为测试机
         假如成功拉活后， onStartCommand 可能会调用多次
          */
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        KeepAliveManager.getInstance().unregisterScreenReceiver(this);
+        KeepAliveManager.getInstance().stopServiceForeground();
+        Log.i(TAG, "onDestroy");
     }
 
     @Override
