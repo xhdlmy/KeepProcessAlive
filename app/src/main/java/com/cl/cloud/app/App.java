@@ -27,7 +27,7 @@ public class App extends Application {
         super.onCreate();
         sContext = this.getApplicationContext();
         sContext.startService(new Intent(sContext, KeepAliveService.class));
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             startJobSheduler();
         }
     }
@@ -43,7 +43,7 @@ public class App extends Application {
             JobInfo jobInfo = builder.build();
             // 2. 获取 JobScheduler
             JobScheduler jobScheduler = (JobScheduler) this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            if(jobScheduler == null) return;
+            if (jobScheduler == null) return;
             // 3. 将任务交由系统去调度
             int errorCode = jobScheduler.schedule(jobInfo);
             LogUtils.i("KeepJobService", "jobScheduler errorCode:" + errorCode);
