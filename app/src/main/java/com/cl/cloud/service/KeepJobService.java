@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.cl.cloud.app.Constant;
 import com.cl.cloud.util.LogUtils;
 import com.cl.cloud.util.ServiceUtils;
 
@@ -27,11 +28,45 @@ import java.util.concurrent.Executors;
     我们需要创建各种Job的描述类JobInfo，并且通过JobScheduler传递给系统。
     当我们描述的条件或者标准满足了，系统将执行app的JobService。
 
-    Terminal: adb shell dumpsys jobscheduler 可以查看 JobService 运行
+    Jobscheduler 通过系统调度 JobService 运行
 
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class KeepJobService extends JobService {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        startJobSheduler();
+    }
+
+    public void startJobSheduler() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            try {
+                // 1. 创建 JobInfo
+                int jobid = 1;
+                JobInfo.Builder builder = new JobInfo.Builder(jobid, new ComponentName(getPackageName(), KeepJobService.class.getName()));
+                // Android 7.0 最小时间间隔为 15min （不可通过设置 setPeriodic）
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    builder.setMinimumLatency(Constant.MILLIS_30); //执行的最小延迟时间
+                    builder.setOverrideDeadline(Constant.MILLIS_30);  //执行的最长延时时间
+                    builder.setBackoffCriteria(Constant.MILLIS_30, JobInfo.BACKOFF_POLICY_LINEAR);//线性重试方案(增长策略)
+                } else {
+                    builder.setPeriodic(Constant.MILLIS_30);
+                }
+                builder.setPersisted(true);
+                JobInfo jobInfo = builder.build();
+                // 2. 获取 JobScheduler
+                JobScheduler jobScheduler = (JobScheduler) this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                if (jobScheduler == null) return;
+                // 3. 将任务交由系统去调度
+                int errorCode = jobScheduler.schedule(jobInfo);
+                LogUtils.i(KeepJobService.class.getSimpleName(), "jobScheduler errorCode:" + errorCode);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
     private static final String TAG = KeepJobService.class.getSimpleName();
 

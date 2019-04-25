@@ -1,6 +1,11 @@
 package com.cl.cloud.base;
 
 
+import android.accounts.AbstractAccountAuthenticator;
+import android.accounts.Account;
+import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
+import android.accounts.NetworkErrorException;
 import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -9,12 +14,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Keep;
 
 import com.cl.cloud.R;
+import com.cl.cloud.activity.AuthenticatorActivity;
 import com.cl.cloud.activity.OnePixelActivity;
+import com.cl.cloud.app.App;
 import com.cl.cloud.service.KeepAliveService;
+import com.cl.cloud.util.LogUtils;
 import com.cl.cloud.util.ServiceUtils;
 
 import static android.Manifest.permission.RECEIVE_BOOT_COMPLETED;
@@ -111,6 +120,7 @@ public class KeepAliveManager {
     // 不能设置为0，不然不会显示通知
     public static int FOREGROUND_SERVICE_ID = 1; // 保证两个 Service 的一致即可
 
+    // 注册保活服务
     public void registerKeepAliveService(KeepAliveService service){
         mKeepAliveService = service;
     }
@@ -155,4 +165,5 @@ public class KeepAliveManager {
             return null;
         }
     }
+
 }

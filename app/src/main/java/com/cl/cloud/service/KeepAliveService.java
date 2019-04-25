@@ -1,12 +1,19 @@
 package com.cl.cloud.service;
 
+import android.accounts.AbstractAccountAuthenticator;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Notification;
 import android.app.Service;
 import android.app.job.JobService;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.cl.cloud.R;
 import com.cl.cloud.base.KeepAliveManager;
 
 /*
@@ -57,15 +64,16 @@ public class KeepAliveService extends Service {
     public void onCreate() {
         super.onCreate();
         KeepAliveManager.getInstance().registerScreenReceiver(this);
+        KeepAliveManager.getInstance().registerKeepAliveService(this);
+        KeepAliveManager.getInstance().setServiceForeground(this); // 设置为前台服务 oom_adj 由 4 升 2 or 1 or 0?
+
+        // TODO 进程主线程中 WebSocket 的连接工作
         Log.i(TAG, "onCreate");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "onStartCommand");
-        KeepAliveManager.getInstance().registerKeepAliveService(this);
-        KeepAliveManager.getInstance().setServiceForeground(this); // 设置为前台服务 oom_adj 由 4 升 2 or 1 or 0?
-        // TODO 进程主线程中 WebSocket 的连接工作
+        Log.i(TAG, "onStartCommand"); // 可能被多次调用
         return START_STICKY;
         /*
         START_STICKY 不能完全保证拉活       Log 中出现 Scheduling restart of crashed service 可能拉活，也可能拉不活 华为测试机
@@ -85,4 +93,5 @@ public class KeepAliveService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
 }
