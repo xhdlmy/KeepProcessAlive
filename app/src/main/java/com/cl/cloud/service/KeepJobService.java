@@ -22,6 +22,7 @@ import java.util.concurrent.Executors;
  */
 /*
     Android5.0 以后系统对 Native 进程等加强了管理
+
     Android5.0 以后
     由系统统一管理和调度
     JobScheduler是framework层里用来安排各种将要执行在app自己进程里的任务的机制。

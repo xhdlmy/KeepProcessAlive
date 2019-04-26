@@ -1,11 +1,6 @@
 package com.cl.cloud.base;
 
 
-import android.accounts.AbstractAccountAuthenticator;
-import android.accounts.Account;
-import android.accounts.AccountAuthenticatorResponse;
-import android.accounts.AccountManager;
-import android.accounts.NetworkErrorException;
 import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -14,16 +9,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.Keep;
 
 import com.cl.cloud.R;
-import com.cl.cloud.activity.AuthenticatorActivity;
 import com.cl.cloud.activity.OnePixelActivity;
-import com.cl.cloud.app.App;
 import com.cl.cloud.service.KeepAliveService;
-import com.cl.cloud.util.LogUtils;
 import com.cl.cloud.util.ServiceUtils;
 
 import static android.Manifest.permission.RECEIVE_BOOT_COMPLETED;

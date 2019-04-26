@@ -3,13 +3,14 @@
           package="com.cl.cloud">
 
     <!--Android账户同步权限-->
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" android:maxSdkVersion="22" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" android:maxSdkVersion="22" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
 
     <!--开机广播-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
 
     <application
         android:name=".app.App"
@@ -32,14 +33,12 @@
                   android:finishOnTaskLaunch="false"
                   android:launchMode="singleInstance"
                   android:theme="@style/TransparentStyle"/>
-        <!--Android同步机制Activity-->
-        <activity android:name=".activity.AuthenticatorActivity" />
 
         <!--KeepAliveService：将进程优先级提高-->
         <service android:name=".service.KeepAliveService"/>
         <service android:name=".base.KeepAliveManager$NotificationHideService"/><!--startForeground NotificationId 取消可感通知-->
 
-        <!--Android5.0以后拉活方案：JobScheduler 异步任务拉起 JobService 服务，需要声明 BIND_JOB_SERVICE 权限-->
+        <!--Android5.0-Android7.0拉活方案：JobScheduler 异步任务拉起 JobService 服务，需要声明 BIND_JOB_SERVICE 权限-->
         <service android:name=".service.KeepJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
