@@ -1,9 +1,7 @@
-package com.cl.cloud.util;
+package com.xhd.alive.util;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
-import com.cl.cloud.BuildConfig;
 
 
 public class LogUtils {

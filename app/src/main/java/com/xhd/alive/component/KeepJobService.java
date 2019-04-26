@@ -1,4 +1,4 @@
-package com.cl.cloud.service;
+package com.xhd.alive.component;
 
 import android.app.job.JobInfo;
 import android.app.job.JobParameters;
@@ -10,16 +10,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.cl.cloud.app.Constant;
-import com.cl.cloud.util.LogUtils;
-import com.cl.cloud.util.ServiceUtils;
+import com.xhd.alive.util.LogUtils;
+import com.xhd.alive.util.ServiceUtils;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-/**
- * Created by computer on 2019/4/12.
- */
 /*
     Android5.0 以后系统对 Native 进程等加强了管理
 
@@ -35,6 +30,8 @@ import java.util.concurrent.Executors;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class KeepJobService extends JobService {
 
+    public static final int MILLIS_30 = 30 * 1000;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -49,11 +46,11 @@ public class KeepJobService extends JobService {
                 JobInfo.Builder builder = new JobInfo.Builder(jobid, new ComponentName(getPackageName(), KeepJobService.class.getName()));
                 // Android 7.0 最小时间间隔为 15min （不可通过设置 setPeriodic）
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    builder.setMinimumLatency(Constant.MILLIS_30); //执行的最小延迟时间
-                    builder.setOverrideDeadline(Constant.MILLIS_30);  //执行的最长延时时间
-                    builder.setBackoffCriteria(Constant.MILLIS_30, JobInfo.BACKOFF_POLICY_LINEAR);//线性重试方案(增长策略)
+                    builder.setMinimumLatency(MILLIS_30); //执行的最小延迟时间
+                    builder.setOverrideDeadline(MILLIS_30);  //执行的最长延时时间
+                    builder.setBackoffCriteria(MILLIS_30, JobInfo.BACKOFF_POLICY_LINEAR);//线性重试方案(增长策略)
                 } else {
-                    builder.setPeriodic(Constant.MILLIS_30);
+                    builder.setPeriodic(MILLIS_30);
                 }
                 builder.setPersisted(true);
                 JobInfo jobInfo = builder.build();

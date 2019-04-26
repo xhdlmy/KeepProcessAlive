@@ -1,4 +1,4 @@
-package com.cl.cloud.util;
+package com.xhd.alive.util;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
@@ -8,9 +8,7 @@ import android.content.ServiceConnection;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 1 获取正在运行的服务
@@ -21,16 +19,17 @@ public class ServiceUtils {
 
     private static List<RunningServiceInfo> getRunningServices(@NonNull Context context){
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<RunningServiceInfo> info = activityManager.getRunningServices(0x7FFFFFFF);
-        return info;
+        assert activityManager != null;
+        return activityManager.getRunningServices(0x7FFFFFFF);
     }
     
     public static List<String> getRunningServiceNames(@NonNull Context context) {
         List<RunningServiceInfo> info = getRunningServices(context);
         List<String> names = new ArrayList<>();
-        if (info == null || info.size() == 0) return null;
-        for (RunningServiceInfo aInfo : info) {
-            names.add(aInfo.service.getClassName());
+        if (info != null && info.size() != 0) {
+            for (RunningServiceInfo aInfo : info) {
+                names.add(aInfo.service.getClassName());
+            }
         }
         return names;
     }

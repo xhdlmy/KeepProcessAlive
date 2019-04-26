@@ -2,8 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
+
     defaultConfig {
-        applicationId "com.cl.cloud"
+        applicationId "com.xhd.alive"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
@@ -22,5 +23,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:27.1.1'
+//        implementation 'com.carmelo:keeplive:1.0.0' // 进程优先级的提高
 }
 

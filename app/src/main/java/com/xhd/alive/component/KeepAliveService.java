@@ -1,27 +1,19 @@
-package com.cl.cloud.service;
+package com.xhd.alive.component;
 
-import android.accounts.AbstractAccountAuthenticator;
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.app.Notification;
 import android.app.Service;
-import android.app.job.JobService;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.cl.cloud.R;
-import com.cl.cloud.base.KeepAliveManager;
+import com.xhd.alive.app.KeepAliveManager;
+import com.xhd.alive.util.AppToWhiteListUtils;
 
 /*
 Android Terminal(终端) 查看进程PID 和 优先级 oom_adj
 
     命令 adb shell
     ps
-    ps|grep com.cl.cloud (筛选)
+    ps|grep com.xhd.alive (筛选)
 
     信息
     USER    进程当前用户；
@@ -64,9 +56,7 @@ public class KeepAliveService extends Service {
     public void onCreate() {
         super.onCreate();
         KeepAliveManager.getInstance().registerScreenReceiver(this);
-        KeepAliveManager.getInstance().registerKeepAliveService(this);
-        KeepAliveManager.getInstance().setServiceForeground(this); // 设置为前台服务 oom_adj 由 4 升 2 or 1 or 0?
-
+        KeepAliveManager.getInstance().startServiceForeground(this);
         // TODO 进程主线程中 WebSocket 的连接工作
         Log.i(TAG, "onCreate");
     }

@@ -1,4 +1,4 @@
-package com.cl.cloud.service;
+package com.xhd.alive.component;
 
 import android.accounts.Account;
 import android.app.Service;
@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.cl.cloud.app.App;
+import com.xhd.alive.app.App;
 
 /**
  * Created by work2 on 2019/4/25.
@@ -19,12 +19,11 @@ import com.cl.cloud.app.App;
 
 public class AccountSyncService extends Service {
 
-    private static final Object mLock = new Object();
     private SyncAdapter mSyncAdapter;
 
     @Override
     public void onCreate() {
-        synchronized (mLock) {
+        synchronized (AccountSyncService.class) {
             if(mSyncAdapter == null) {
                 mSyncAdapter = new SyncAdapter(App.getContext(), true);
             }

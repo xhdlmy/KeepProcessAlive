@@ -1,10 +1,7 @@
-package com.cl.cloud.service;
+package com.xhd.alive.component;
 
-import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
-import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
-import android.accounts.NetworkErrorException;
 import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -13,10 +10,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.cl.cloud.R;
-import com.cl.cloud.app.App;
-import com.cl.cloud.app.Constant;
-import com.cl.cloud.util.LogUtils;
+import com.xhd.alive.R;
+import com.xhd.alive.app.App;
 
 /**
  * Android 8.0 自动同步功能已经关闭，需要点击进行手动同步
@@ -24,37 +19,44 @@ import com.cl.cloud.util.LogUtils;
 
 public class AccountService extends Service {
 
-    private static final String TYPE = "com.cl.cloud.account.type";
-    private static final String PROVIDER = "com.cl.cloud.account.provider";
-    private static final int INTERVAL_TIME = Constant.SECOND_30;
+    public static String ACCOUNT_TYPE;
+    public static String ACCOUNT_PROVIDER;
+    public static final long SECOND_30 = 30;
 
     private Account mAccount;
 
     private Context sContext = App.getContext();
 
+    private void initConstant(Context context){
+        String packageName = context.getPackageName();
+        ACCOUNT_TYPE = packageName + ".account.type";
+        ACCOUNT_PROVIDER = packageName + ".account.provider";
+    }
+
     private boolean addAccount(){
         AccountManager am = (AccountManager) sContext.getSystemService(Context.ACCOUNT_SERVICE);
         assert am != null;
-        Account[] accounts = am.getAccountsByType(TYPE);
+        Account[] accounts = am.getAccountsByType(ACCOUNT_TYPE);
         if(accounts.length > 0){
             mAccount = accounts[0];
         }else{
-            mAccount = new Account(sContext.getString(R.string.account_name), TYPE);
+            mAccount = new Account(sContext.getString(R.string.app_name), ACCOUNT_TYPE);
         }
         return am.addAccountExplicitly(mAccount, null, null);
     }
 
     private void syncAccount(Bundle bundle){
         if(addAccount()){
-            ContentResolver.setIsSyncable(mAccount, PROVIDER, 1);
-            ContentResolver.setSyncAutomatically(mAccount, PROVIDER,true);
-            ContentResolver.addPeriodicSync(mAccount, PROVIDER, bundle, INTERVAL_TIME);
+            ContentResolver.setIsSyncable(mAccount, ACCOUNT_PROVIDER, 1);
+            ContentResolver.setSyncAutomatically(mAccount, ACCOUNT_PROVIDER,true);
+            ContentResolver.addPeriodicSync(mAccount, ACCOUNT_PROVIDER, bundle, SECOND_30);
         }
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        initConstant(this);
         syncAccount(new Bundle());
     }
 

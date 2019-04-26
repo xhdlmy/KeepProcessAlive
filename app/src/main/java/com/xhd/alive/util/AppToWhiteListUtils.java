@@ -1,4 +1,4 @@
-package com.cl.cloud.util;
+package com.xhd.alive.util;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -6,26 +6,35 @@ import android.content.Intent;
 import android.provider.Settings;
 
 /**
- * Created by carmelo on 2018/3/17.
  * 国内手机厂商白名单跳转工具类
  */
 
-public class WhiteBrandAliveUtils {
+public class AppToWhiteListUtils {
 
-    public static void enterWhiteListSetting(Context context){
+    // 将应用添加至手机白名单
+    public static void addApp2WhiteLists(Context context){
         try {
             context.startActivity(getSettingIntent());
-        }catch (Exception e){
+        }catch (Exception e){ // 如果找不到对于机型页面
             context.startActivity(new Intent(Settings.ACTION_SETTINGS));
         }
     }
 
     private static Intent getSettingIntent(){
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ComponentName componentName = getBrandComponentName();
+        if(componentName != null){
+            intent.setComponent(componentName);
+        }else{
+            intent.setAction(Settings.ACTION_SETTINGS);
+        }
+        return intent;
+    }
 
+    private static ComponentName getBrandComponentName(){
         ComponentName componentName = null;
-
         String brand = android.os.Build.BRAND;
-
         switch (brand.toLowerCase()){
             case "samsung":
                 componentName = new ComponentName("com.samsung.android.sm",
@@ -62,14 +71,7 @@ public class WhiteBrandAliveUtils {
             default:
                 break;
         }
-
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if(componentName!=null){
-            intent.setComponent(componentName);
-        }else{
-            intent.setAction(Settings.ACTION_SETTINGS);
-        }
-        return intent;
+        return componentName;
     }
+
 }
