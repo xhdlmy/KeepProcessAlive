@@ -6,7 +6,7 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.xhd.alive.app.KeepAliveManager;
+import com.xhd.alive.KeepAliveManager;
 
 public class OnePixelActivity extends AppCompatActivity {
 

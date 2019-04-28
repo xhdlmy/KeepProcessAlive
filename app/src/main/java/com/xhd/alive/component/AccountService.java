@@ -11,7 +11,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.xhd.alive.R;
-import com.xhd.alive.app.App;
 
 /**
  * Android 8.0 自动同步功能已经关闭，需要点击进行手动同步
@@ -25,8 +24,6 @@ public class AccountService extends Service {
 
     private Account mAccount;
 
-    private Context sContext = App.getContext();
-
     private void initConstant(Context context){
         String packageName = context.getPackageName();
         ACCOUNT_TYPE = packageName + ".account.type";
@@ -34,13 +31,13 @@ public class AccountService extends Service {
     }
 
     private boolean addAccount(){
-        AccountManager am = (AccountManager) sContext.getSystemService(Context.ACCOUNT_SERVICE);
+        AccountManager am = (AccountManager) this.getSystemService(Context.ACCOUNT_SERVICE);
         assert am != null;
         Account[] accounts = am.getAccountsByType(ACCOUNT_TYPE);
         if(accounts.length > 0){
             mAccount = accounts[0];
         }else{
-            mAccount = new Account(sContext.getString(R.string.app_name), ACCOUNT_TYPE);
+            mAccount = new Account(this.getString(R.string.app_name), ACCOUNT_TYPE);
         }
         return am.addAccountExplicitly(mAccount, null, null);
     }

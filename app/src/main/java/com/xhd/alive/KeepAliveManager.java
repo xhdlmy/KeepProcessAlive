@@ -1,4 +1,4 @@
-package com.xhd.alive.app;
+package com.xhd.alive;
 
 
 import android.app.Notification;
@@ -10,7 +10,6 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.IBinder;
 
-import com.xhd.alive.R;
 import com.xhd.alive.component.AccountService;
 import com.xhd.alive.component.KeepAliveService;
 import com.xhd.alive.component.KeepJobService;
@@ -148,6 +147,19 @@ public class KeepAliveManager {
      */
     public void syncAccount(Context context){
         context.startService(new Intent(context, AccountService.class));
+    }
+
+    /*
+    正式开启保活
+     */
+    public void startKeepAliveService(Context context){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            // Android8.0 同步机制手动同步后报错：Not allowed to start service Intent { cmp=com.xhd.alive/.service.KeepAliveService }: app is in background uid
+            // Android8.0 后台执行限制（为了省电），不允许在后台直接 startService 服务
+            context.startForegroundService(new Intent(context, KeepAliveService.class));
+        }else{
+            context.startService(new Intent(context, KeepAliveService.class));
+        }
     }
 
 }

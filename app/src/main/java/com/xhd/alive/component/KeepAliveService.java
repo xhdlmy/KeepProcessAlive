@@ -5,8 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.xhd.alive.app.KeepAliveManager;
-import com.xhd.alive.util.AppToWhiteListUtils;
+import com.xhd.alive.KeepAliveManager;
 
 /*
 Android Terminal(终端) 查看进程PID 和 优先级 oom_adj
